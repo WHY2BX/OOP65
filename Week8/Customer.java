@@ -3,7 +3,7 @@ public class Customer {
     private String firstName;
     private String lastName;
     /*private Account acct[];*/
-    private ArrayList acct;
+    private ArrayList <Account> acct; //Generic --> no need to cast
     private int numOfAccount = 0;
     
     //constructor
@@ -29,7 +29,7 @@ public class Customer {
     }
     public Account getAccount(int index){
         /*return this.acct[index];*/
-        return (Account)acct.get(index);
+        return (Account)acct.get(index); // cast --> to pass when compile
     }
     public int getNumOfAccount(){
         return this.numOfAccount;
