@@ -80,7 +80,7 @@ public class TellerGUI extends Account implements ActionListener{
             acct.deposit(Integer.parseInt(amount.getText()));
             balance.setText(acct.getBalance()+"");
         }
-        else if(event.getSource().equals(with)){
+        else if(event.getSource().equals(with) && acct.getBalance() >= Integer.parseInt(amount.getText())){
             acct.withdraw(Integer.parseInt(amount.getText()));
             balance.setText(acct.getBalance()+"");
         }
