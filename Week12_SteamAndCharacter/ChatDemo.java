@@ -4,6 +4,8 @@ import java.awt.event.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class ChatDemo implements ActionListener, WindowListener {
     private JFrame fr;
     private JPanel p1;
@@ -58,7 +60,7 @@ public class ChatDemo implements ActionListener, WindowListener {
         if (event.getSource().equals(submit)){
             String txt = type.getText();
             type.setText("");
-            chat.append(dtf.format(LocalDateTime.now()) + " : " + txt);
+            chat.append(dtf.format(LocalDateTime.now()) + " : " + txt + "\n");
         }
         else if (event.getSource().equals(reset)) {
             chat.setText("");
@@ -66,23 +68,33 @@ public class ChatDemo implements ActionListener, WindowListener {
     }
     
     public void windowOpened(WindowEvent e){
-        if (e.getSource().equals(fr)){
-            try (FileReader f = new FileReader("ChatDemo.txt");){
+        File file = new File("ChatDemo.dat");
+        if (file.exists() == false) {
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(ChatDemo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        // 
+            try (FileReader f = new FileReader("ChatDemo.dat");){
+                String txt = "";
                 int data = f.read();
                 while(data!=-1){
                     System.out.println((char)data);
-                    chat.setText((char)data+"");
+                    txt += (char)data;
+                    data = f.read();
                 }
+                chat.setText(txt);
             }
             catch(IOException io){
                 io.printStackTrace();
                 }
-            }
         }
     
     public void windowClosing(WindowEvent e){
         if (e.getSource().equals(fr)){
-            try(FileWriter f = new FileWriter("ChatDemo.txt");){
+            try(FileWriter f = new FileWriter("ChatDemo.dat");){
                 f.write(chat.getText());
             }
             catch(IOException io){
