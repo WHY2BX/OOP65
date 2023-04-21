@@ -1,6 +1,9 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class StudentView extends Student implements ActionListener, WindowListener {
     private Student s;
     private JFrame fr;
@@ -18,7 +21,7 @@ public class StudentView extends Student implements ActionListener, WindowListen
         
         idx = new JTextField();
         namex = new JTextField();
-        moneyx = new JTextField("0");
+        moneyx = new JTextField();
         moneyx.setEditable(false);
         
         id = new JLabel("ID : ");
@@ -50,6 +53,7 @@ public class StudentView extends Student implements ActionListener, WindowListen
         p4.add(with);
         
         
+        fr.addWindowListener(this);
         fr.add(p1, BorderLayout.CENTER);
         fr.add(p2, BorderLayout.SOUTH);
         
@@ -63,23 +67,67 @@ public class StudentView extends Student implements ActionListener, WindowListen
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(dep)){
-            s.setMoney(s.getMoney()+(double)moneyx.getText());
+            int result = s.getMoney()+100;
+            s.setMoney(result);
+            moneyx.setText(s.getMoney()+"");
+            System.out.println(s.getMoney());
+        }
+        else if (e.getSource().equals(with)){
+            int result = s.getMoney()-100;
+            s.setMoney(result);
+            moneyx.setText(s.getMoney()+"");
+            System.out.println(s.getMoney());
         }
     }
 
     @Override
     public void windowOpened(WindowEvent e) {
+        File data = new File("StudentM.dat");
+        if (s == null){
+            s = new Student();
+            try {
+                data.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(StudentView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
+        try{
+            FileInputStream rd = new FileInputStream("StudentM.dat");
+            ObjectInputStream OIn = new ObjectInputStream(rd);
+            s = (Student)OIn.readObject();
+            idx.setText(s.getID()+"");
+            
+            //s.setName(name);
+            OIn.close();
+            rd.close();
+            }
+        catch(IOException io){
+            io.printStackTrace();
+        }
+        catch(ClassNotFoundException cl){
+            cl.printStackTrace();
+        }
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
-        
+        try{
+            FileOutputStream f = new FileOutputStream("StudentM.dat");
+            ObjectOutputStream OOut = new ObjectOutputStream(f);
+            s.setID(Integer.parseInt(idx.getText()));
+            OOut.writeObject(s);
+            OOut.close();
+            f.close();
+        }
+        catch(IOException io){
+            io.printStackTrace();
+        }
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-        
+
     }
 
     @Override
