@@ -72,25 +72,25 @@ public class ChatDemo implements ActionListener, WindowListener {
         if (file.exists() == false) {
             try {
                 file.createNewFile();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex) {
                 Logger.getLogger(ChatDemo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        // 
-            try (FileReader f = new FileReader("ChatDemo.dat");){
-                String txt = "";
-                int data = f.read();
-                while(data!=-1){
-                    System.out.println((char)data);
-                    txt += (char)data;
-                    data = f.read();
-                }
-                chat.setText(txt);
+        try (FileReader f = new FileReader("ChatDemo.dat");){
+            String txt = "";
+            int data = f.read();
+            while(data!=-1){
+                System.out.println((char)data);
+                txt += (char)data;
+                data = f.read();
             }
-            catch(IOException io){
-                io.printStackTrace();
-                }
+            chat.setText(txt);
         }
+        catch(IOException io){
+            io.printStackTrace();
+            }
+    }
     
     public void windowClosing(WindowEvent e){
         if (e.getSource().equals(fr)){
