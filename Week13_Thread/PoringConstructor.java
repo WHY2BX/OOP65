@@ -9,7 +9,6 @@ public class PoringConstructor implements ActionListener{
     private JPanel pn;
 
     public PoringConstructor(){
-        poring = new Poring();
         fr = new JFrame();
         add = new JButton("Add");
         pn = new JPanel();
@@ -29,12 +28,16 @@ public class PoringConstructor implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals(add)){
-            System.out.println("eiei");
-            new Poring();
-            poring.plusNum();
-            poring.run();
-            }
-        }
-    
+        (new Thread(new Poring())).start();
+        //poring.run();
+        
+//    public static void main(String[] args) {
+//    (new Thread(new Poring())).start();
+//
+//    }
+//
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//       // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
