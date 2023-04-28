@@ -1,18 +1,23 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import java.util.Random;
+
 public class Poring implements ActionListener, MouseListener, Runnable {
     private JFrame fr;
     private JLabel imageLabel;
     private JLabel count;
     private ImageIcon img;
-    private int num;
+    private static int num;
     
     
     public Poring() {
+        num++;
         fr = new JFrame();
         count = new JLabel(num+"");
-        img = new ImageIcon("D:\\IT_KMITL\\YEAR_1\\OOP\\Thread\\src\\poringpics.png");
+        img = new ImageIcon("C:\\Users\\LAB203-01\\Downloads\\poringpics.png");
         imageLabel = new JLabel(img);
         
         imageLabel.addMouseListener(this);
@@ -24,19 +29,21 @@ public class Poring implements ActionListener, MouseListener, Runnable {
         fr.setResizable(false);
         fr.pack();
         fr.setVisible(true);
-        //fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        fr.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         
-    }
-
-    public void plusNum(){
-        num++;
     }
     
     @Override
     public void run() {
         while(true){
-            count.setText(num+"");
+            try {
+                fr.setLocation(new Random().nextInt(800), new Random().nextInt(800));
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Poring.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
